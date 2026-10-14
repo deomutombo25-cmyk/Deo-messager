@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deo Messager</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#111b21;display:flex;justify-content:center;height:100vh}
+.app{width:100%;max-width:420px;background:#efeae2;display:flex;flex-direction:column}
+.header{background:#008069;color:white;padding:14px 16px;display:flex;align-items:center;gap:12px;font-weight:bold;font-size:20px}
+.header span{background:white;color:#008069;width:36px;height:36px;border-radius:50%;display:grid;place-items:center}
+.chat{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:8px;background:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png')}
+.msg{max-width:75%;padding:8px 12px;border-radius:8px;font-size:15px;line-height:1.3}
+.me{background:#d9fdd3;align-self:flex-end;border-top-right-radius:0}
+.other{background:white;align-self:flex-start;border-top-left-radius:0}
+.input{display:flex;gap:8px;padding:10px;background:#f0f2f5;align-items:center}
+.input input{flex:1;padding:12px 16px;border-radius:24px;border:none;outline:none;font-size:16px}
+.input button{background:#008069;color:white;border:none;width:46px;height:46px;border-radius:50%;font-size:20px;cursor:pointer}
+.status{text-align:center;color:#667781;font-size:12px;padding:8px}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="header"><span>D</span> Deo Messager</div>
+<div class="status">Chiffrement de bout en bout • Créé par Deo</div>
+<div class="chat" id="chat">
+<div class="msg other">Salut Deo ! Bienvenue sur ton app 🔥</div>
+<div class="msg other">Tu peux envoyer des messages ici</div>
+</div>
+<div class="input">
+<input id="txt" placeholder="Message..." onkeydown="if(event.key==='Enter')send()">
+<button onclick="send()">➤</button>
+</div>
+</div>
+<script>
+const chat=document.getElementById('chat');
+const txt=document.getElementById('txt');
+let msgs=JSON.parse(localStorage.getItem('deo_msgs')||'[]');
+msgs.forEach(m=>addMsg(m.t,m.me));
+function addMsg(t,me){
+const d=document.createElement('div');
+d.className='msg '+(me?'me':'other');
+d.textContent=t;
+chat.appendChild(d);
+chat.scrollTop=chat.scrollHeight;
+}
+function send(){
+const t=txt.value.trim();
+if(!t)return;
+addMsg(t,true);
+msgs.push({t,me:true});
+localStorage.setItem('deo_msgs',JSON.stringify(msgs));
+txt.value='';
+setTimeout(()=>{addMsg('Reçu ✔️✔️',false)},600);
+}
+</script>
+</div>
+</body>
+  </html>
